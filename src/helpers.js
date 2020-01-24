@@ -18,7 +18,7 @@ const transposeLotsToLocations = (locations, lots) => {
               designation: ligne.designation,
               prixUnitaireHT: prixUnitaire,
               quantite: quantite,
-              prixTotalHT: prixTotal
+              prixHT: prixTotal
             }
           )
         })

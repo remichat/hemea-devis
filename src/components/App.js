@@ -36,6 +36,14 @@ class App extends Component {
     })
   }
 
+  switchView = () => {
+    if(this.state.isViewLots) {
+      this.setState({cardsInfos: this.state.locations, isViewLots: false})
+    } else {
+      this.setState({cardsInfos: this.state.lots, isViewLots: true})
+    }
+  }
+
   fetchAPIdata = () => {
     const url = 'https://api.travauxlib.com/api/devis-pro/JKusHl8Ba8MABIjdCtLZOe2lxxnUfX'
     const data = fetch(url)
@@ -60,7 +68,7 @@ class App extends Component {
 
             <div className="d-flex justify-content-between my-3">
               <h2 className="m-0">Détails de la prestation</h2>
-              <Button />
+              <Button switchView={this.switchView}/>
             </div>
 
             <CardsList cardsInfos={this.state.cardsInfos}/>
