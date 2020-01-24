@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import '../css/App.css';
-import { transposeLotsToLocations } from '../helpers'
+
+import Button from './Button';
+import CardsList from './CardsList';
+import Total from './Total';
+import { transposeLotsToLocations } from '../helpers';
 
 class App extends Component {
   state = {
@@ -9,6 +13,9 @@ class App extends Component {
     cardsInfos: [],
     lots: [],
     locations: [],
+    totalHT: 0,
+    totalTTC: 0,
+    totalTVA: 0,
     isViewLots: true
   };
 
@@ -16,13 +23,16 @@ class App extends Component {
     const data = await this.fetchAPIdata();
 
     const { address, postalCode, city } = data.deal.chantierAddress;
-
+    console.log(data);
     this.setState({
       title: data.title,
       address: `${address} ${postalCode} ${city}`,
       cardsInfos: data.lots,
       lots: data.lots,
-      locations: transposeLotsToLocations(data.locations, data.lots)
+      locations: transposeLotsToLocations(data.locations, data.lots),
+      totalHT: parseInt(data.prixTotalHT),
+      totalTTC: parseInt(data.prixTotalTTC),
+      totalTVA: parseInt(data.montantsTVA[0].montant)
     })
   }
 
@@ -39,8 +49,25 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        Hello
+      <div className="container my-4">
+        <div className="row">
+          <div className="col-12">
+
+            <div className="text-center my-4">
+              <h3>{this.state.title}</h3>
+              <h4>{this.state.address}</h4>
+            </div>
+
+            <div className="d-flex justify-content-between my-3">
+              <h2 className="m-0">Détails de la prestation</h2>
+              <Button />
+            </div>
+
+            <CardsList cardsInfos={this.state.cardsInfos}/>
+
+            <Total totalHT={this.state.totalHT} totalTTC={this.state.totalTTC} totalTVA={this.state.totalTVA}/>
+          </div>
+        </div>
       </div>
     );
   }
